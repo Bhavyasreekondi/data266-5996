@@ -1,1 +1,355 @@
+DATA 266 - HW1 RUN LOG
+========================
 
+SID4: 5996
+SEED: 5996
+SLICE: 996
+HP_ID: 2
+CLS_A: 6
+CLS_B: 2
+
+Training seeds:
+5996, 5997, 5998
+
+
+============================================================
+1. EXECUTION ENVIRONMENT
+============================================================
+
+Execution environment: Google Colab
+GPU: NVIDIA Tesla T4
+
+Run timestamp:
+[PASTE ACTUAL TIMESTAMP FROM COLAB]
+
+nvidia-smi:
+NVIDIA Tesla T4
+Driver Version: 580.82.07
+CUDA Version reported by driver: 13.0
+
+nvcc --version:
+[PASTE ACTUAL nvcc --version OUTPUT HERE]
+
+
+============================================================
+2. DATASET AND DATA SPLIT
+============================================================
+
+Dataset shape:
+(759, 9)
+
+Number of input features:
+8
+
+Target values:
+[0 1]
+
+Target class counts:
+1    496
+0    263
+
+Data split:
+Training: 70%
+Validation: 15%
+Testing: 15%
+
+Split random_state:
+5996
+
+The same dataset split was retained for all model comparisons.
+
+
+============================================================
+3. NEURAL NETWORK CONFIGURATIONS
+============================================================
+
+Baseline configuration:
+Hidden layers: [64, 32]
+Learning rate: 0.001
+Epochs: 30
+
+HP_ID = 2 modified configuration:
+Hidden layers: [64, 32]
+Learning rate: 0.003
+Epochs: 30
+
+Training seeds:
+5996
+5997
+5998
+
+
+============================================================
+4. PYTORCH RESULTS
+============================================================
+
+SEED = 5996 baseline run:
+
+PyTorch Baseline Test Accuracy: 0.6491
+
+Final training loss:
+0.6308
+
+Final validation loss:
+0.6297
+
+
+SEED = 5996 modified run:
+
+PyTorch Modified Test Accuracy: 0.7544
+
+Final training loss:
+0.5400
+
+Final validation loss:
+0.5491
+
+
+Three-seed aggregate results:
+
+PyTorch Baseline
+Mean Test Accuracy: 0.649123
+Standard Deviation: 0.000000
+
+PyTorch HP_ID 2 Modified
+Mean Test Accuracy: 0.751462
+Standard Deviation: 0.004135
+
+
+============================================================
+5. TENSORFLOW RESULTS
+============================================================
+
+Three-seed aggregate results:
+
+TensorFlow Baseline
+Mean Test Accuracy: 0.733918
+Standard Deviation: 0.008270
+
+TensorFlow HP_ID 2 Modified
+Mean Test Accuracy: 0.728070
+Standard Deviation: 0.007162
+
+
+============================================================
+6. NEURAL NETWORK FINAL RESULTS
+============================================================
+
+Framework    Model               LR       Epochs    Mean Accuracy    Std
+---------------------------------------------------------------------------
+PyTorch      Baseline            0.001    30        0.649123         0.000000
+PyTorch      HP_ID 2 Modified    0.003    30        0.751462         0.004135
+TensorFlow   Baseline            0.001    30        0.733918         0.008270
+TensorFlow   HP_ID 2 Modified    0.003    30        0.728070         0.007162
+
+
+============================================================
+7. CUDA CONFIGURATION
+============================================================
+
+GPU:
+NVIDIA Tesla T4
+
+Matrix sizes:
+256
+1024
+4096
+
+CUDA thread block:
+16 x 16
+
+Threads per block:
+256
+
+GPU warm-up was performed before measured execution.
+
+Benchmark repetitions:
+3
+
+Final aggregation:
+Arithmetic mean
+
+
+============================================================
+8. CUDA NORMAL BENCHMARK - RUN 1
+============================================================
+
+Matrix size: 256 x 256
+CPU time (ms): 2.0488
+GPU kernel time (ms): 0.0691
+H2D time (ms): 0.1878
+D2H time (ms): 0.0994
+H2D+D2H (ms): 0.2872
+GPU end-to-end (ms): 0.3563
+End-to-end speedup: 5.7499x
+Maximum error: 0.0000
+
+Matrix size: 1024 x 1024
+CPU time (ms): 202.7078
+GPU kernel time (ms): 3.4471
+H2D time (ms): 1.9824
+D2H time (ms): 1.0238
+H2D+D2H (ms): 3.0062
+GPU end-to-end (ms): 6.4533
+End-to-end speedup: 31.4114x
+Maximum error: 0.0001
+
+Matrix size: 4096 x 4096
+CPU time (ms): 20285.3755
+GPU kernel time (ms): 198.2307
+H2D time (ms): 32.2907
+D2H time (ms): 17.2745
+H2D+D2H (ms): 49.5652
+GPU end-to-end (ms): 247.7958
+End-to-end speedup: 81.8633x
+Maximum error: 0.0004
+
+
+============================================================
+9. CUDA NORMAL BENCHMARK - RUN 2
+============================================================
+
+Matrix size: 256 x 256
+CPU time (ms): 5.2090
+GPU kernel time (ms): 0.0446
+H2D time (ms): 0.1830
+D2H time (ms): 0.0925
+H2D+D2H (ms): 0.2755
+GPU end-to-end (ms): 0.3201
+End-to-end speedup: 16.2731x
+Maximum error: 0.0000
+
+Matrix size: 1024 x 1024
+CPU time (ms): 199.1947
+GPU kernel time (ms): 2.1562
+H2D time (ms): 1.9538
+D2H time (ms): 1.0250
+H2D+D2H (ms): 2.9787
+GPU end-to-end (ms): 5.1349
+End-to-end speedup: 38.7925x
+Maximum error: 0.0001
+
+Matrix size: 4096 x 4096
+CPU time (ms): 19858.0338
+GPU kernel time (ms): 199.4901
+H2D time (ms): 28.1805
+D2H time (ms): 14.8708
+H2D+D2H (ms): 43.0512
+GPU end-to-end (ms): 242.5414
+End-to-end speedup: 81.8748x
+Maximum error: 0.0004
+
+
+============================================================
+10. CUDA NORMAL BENCHMARK - RUN 3
+============================================================
+
+Matrix size: 256 x 256
+CPU time (ms): 1.9524
+GPU kernel time (ms): 0.0487
+H2D time (ms): 0.1824
+D2H time (ms): 0.0914
+H2D+D2H (ms): 0.2738
+GPU end-to-end (ms): 0.3225
+End-to-end speedup: 6.0548x
+Maximum error: 0.0000
+
+Matrix size: 1024 x 1024
+CPU time (ms): 197.4656
+GPU kernel time (ms): 2.3429
+H2D time (ms): 1.9921
+D2H time (ms): 1.0159
+H2D+D2H (ms): 3.0081
+GPU end-to-end (ms): 5.3510
+End-to-end speedup: 36.9027x
+Maximum error: 0.0001
+
+Matrix size: 4096 x 4096
+CPU time (ms): 20626.7197
+GPU kernel time (ms): 201.0010
+H2D time (ms): 33.3524
+D2H time (ms): 15.1548
+H2D+D2H (ms): 48.5073
+GPU end-to-end (ms): 249.5082
+End-to-end speedup: 82.6695x
+Maximum error: 0.0004
+
+
+============================================================
+11. FINAL CUDA AGGREGATED RESULTS
+============================================================
+
+The final reported CUDA results use the arithmetic mean of the
+three normal benchmark runs.
+
+N=256
+Mean CPU time: 3.0701 ms
+Mean GPU kernel time: 0.0541 ms
+Mean H2D+D2H time: 0.2788 ms
+Mean GPU end-to-end time: 0.3330 ms
+End-to-end speedup: 9.22x
+Maximum error: 0.0000
+
+N=1024
+Mean CPU time: 199.7894 ms
+Mean GPU kernel time: 2.6487 ms
+Mean H2D+D2H time: 2.9977 ms
+Mean GPU end-to-end time: 5.6464 ms
+End-to-end speedup: 35.39x
+Maximum error: 0.0001
+
+N=4096
+Mean CPU time: 20256.7097 ms
+Mean GPU kernel time: 199.5739 ms
+Mean H2D+D2H time: 47.0412 ms
+Mean GPU end-to-end time: 246.6151 ms
+End-to-end speedup: 82.14x
+Maximum error: 0.0004
+
+
+============================================================
+12. CUDA PROFILING
+============================================================
+
+Profiler:
+NVIDIA Nsight Compute (ncu)
+
+Command:
+ncu --target-processes all ./matrix_mul
+
+The profiler confirmed the CUDA kernel launch configuration,
+including 256 threads per block for the 16 x 16 thread blocks.
+
+For the largest workload, high achieved occupancy was observed.
+
+IMPORTANT:
+The execution times produced while running under Nsight Compute were
+not used for the final benchmark table. Nsight Compute instruments and
+replays CUDA kernels while collecting profiling metrics, which adds
+substantial profiling overhead.
+
+The final CUDA timing results were therefore obtained from normal
+./matrix_mul executions without ncu instrumentation.
+
+
+============================================================
+13. RELEVANT ISSUES / ERRORS
+============================================================
+
+During analysis, the timings produced under NVIDIA Nsight Compute were
+initially compared with normal execution timings. The profiler output
+showed substantially larger kernel times because ncu performed multiple
+profiling passes.
+
+The issue was resolved by separating profiling from benchmarking:
+- ncu output was retained for profiling information.
+- Normal ./matrix_mul executions were used for performance measurements.
+- The normal benchmark was repeated three times.
+- Arithmetic means were used for the final reported CUDA results.
+
+[PASTE ANY ACTUAL ERROR OR STACK TRACE FROM THE RUN HERE IF APPLICABLE]
+
+
+============================================================
+END OF HW1 RUN LOG
+============================================================
