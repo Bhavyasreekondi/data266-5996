@@ -1,0 +1,439 @@
+HW2 RUN LOG
+===========
+
+Student Parameters
+------------------
+SID4 = 5996
+SEED = 5996
+SLICE = 996
+HP_ID = 2
+CLS_A = 6
+CLS_B = 2
+
+
+PART 1: EMBEDDING TRANSFER LEARNING
+===================================
+
+Objective:
+Use pretrained Google News Word2Vec embeddings, inspect semantic neighborhoods
+for five target words, fine-tune the embeddings using IMDB movie-review text,
+and compare the representations before and after fine-tuning.
+
+Target words:
+cast
+score
+plot
+screen
+review
+
+
+Environment / Libraries:
+- Python
+- Gensim
+- Pandas
+- NumPy
+- scikit-learn
+- Matplotlib
+
+
+Dataset:
+IMDB Dataset.csv
+
+The Hugging Face IMDB dataset loader was initially attempted but failed because
+of a Hugging Face URI/API-related error. The local IMDB Dataset.csv file was
+therefore loaded with pandas.
+
+IMDB reviews were tokenized using:
+
+gensim.utils.simple_preprocess(review, deacc=True)
+
+
+Pretrained embedding:
+word2vec-google-news-300
+
+Embedding dimension:
+300
+
+
+Fine-tuning configuration:
+- Model: Gensim Word2Vec
+- vector_size = 300
+- window = 5
+- min_count = 5
+- sg = 1
+- negative = 5
+- seed = 5996
+- epochs = 5
+
+The Word2Vec vocabulary was constructed from the IMDB review corpus.
+For words shared with Google News Word2Vec, pretrained 300-dimensional vectors
+were copied into the new Word2Vec model before training on the IMDB corpus.
+
+
+Original nearest neighbors:
+
+CAST
+1. casts   0.7219
+2. casting 0.7188
+3. Cast    0.6638
+
+SCORE
+1. scoring 0.7197
+2. scores  0.6596
+3. scored  0.6384
+
+PLOT
+1. plots    0.7625
+2. Plot     0.6524
+3. plotting 0.6328
+
+SCREEN
+1. screens     0.7729
+2. onscreen    0.6115
+3. LCD_screen  0.5599
+
+REVIEW
+1. reviewed  0.6630
+2. reviewing 0.6610
+3. reviews   0.6380
+
+
+Fine-tuned nearest neighbors:
+
+CAST
+1. supporting 0.5939
+2. actors     0.5777
+3. ensemble   0.5672
+
+SCORE
+1. music    0.6515
+2. ennio    0.6506
+3. donaggio 0.6434
+
+PLOT
+1. storyline 0.7190
+2. story     0.6577
+3. plotline  0.6130
+
+SCREEN
+1. screens   0.5311
+2. onscreen  0.4659
+3. stage     0.4504
+
+REVIEW
+1. comment  0.6621
+2. preface  0.6027
+3. reviews  0.5910
+
+
+Original-vs-fine-tuned cosine similarity:
+
+cast   = 0.639884
+score  = 0.488997
+plot   = 0.634836
+screen = 0.636736
+review = 0.483186
+
+Embedding shift was calculated as:
+
+shift = 1 - cosine_similarity
+
+Shift values:
+
+cast   = 0.360116
+score  = 0.511003
+plot   = 0.365164
+screen = 0.363264
+review = 0.516814
+
+Most shifted word:
+review
+
+Least shifted word:
+cast
+
+A 2D t-SNE visualization was produced for the word "review" and its original
+and fine-tuned semantic neighborhoods.
+
+
+PART 2: RETRIEVAL-AUGMENTED GENERATION
+======================================
+
+Objective:
+Build a RAG pipeline from ten Wikipedia movie pages using explicit LangChain
+components.
+
+Wikipedia movies used:
+- The Dark Knight
+- Inception
+- Interstellar
+- Titanic
+- The Matrix
+- Forrest Gump
+- Gladiator
+- The Shawshank Redemption
+- Jurassic Park
+- The Godfather
+
+
+Document loader:
+LangChain WebBaseLoader
+
+WikipediaLoader was initially attempted but the Wikipedia API returned a
+non-JSON response, causing a JSONDecodeError. WebBaseLoader was used instead.
+
+Number of source documents:
+10
+
+
+Baseline text splitting:
+RecursiveCharacterTextSplitter
+
+chunk_size = 500
+chunk_overlap = 50
+
+
+Embedding model:
+sentence-transformers/all-MiniLM-L6-v2
+
+Embedding dimension:
+384
+
+
+Vector database:
+FAISS
+
+Retriever:
+Top-k = 3
+
+
+LLM:
+Qwen/Qwen2.5-0.5B-Instruct
+
+An initial attempt was made with google/flan-t5-base. The installed Transformers
+environment did not support the intended text2text-generation pipeline, and the
+direct FLAN-T5 model generated unreliable responses during validation.
+Qwen2.5-0.5B-Instruct was therefore used for the final RAG experiment.
+
+
+Explicit RAG components:
+1. Document loader
+2. Text splitter
+3. Hugging Face embedding model
+4. FAISS vector store
+5. Top-3 retriever
+6. LangChain PromptTemplate
+7. Qwen instruction-tuned LLM
+
+
+Official five evaluation questions:
+
+1. What song is used as an audio cue to synchronize actions across dream levels
+   in Inception?
+
+2. What is the name of the ship that strikes an iceberg in Titanic?
+
+3. Who plays Neo in The Matrix?
+
+4. What prison is Andy Dufresne sent to in The Shawshank Redemption?
+
+5. Which dinosaur is responsible for many of the attacks in Jurassic Park?
+
+
+Baseline evaluation:
+
+Question 1 - Inception
+Relevant answer-bearing passage in Top-3: No
+Final answer correct: No
+Observed generated answer:
+"Inception: Kick"
+
+Question 2 - Titanic
+Relevant answer-bearing passage in Top-3: Yes
+First relevant rank: 3
+Final answer correct: Yes
+
+Question 3 - The Matrix
+Relevant answer-bearing passage in Top-3: Yes
+First relevant rank: 1
+Final answer correct: Yes
+
+Question 4 - The Shawshank Redemption
+Relevant answer-bearing passage in Top-3: Yes
+First relevant rank: 1
+Final answer correct: Yes
+
+Question 5 - Jurassic Park
+Relevant answer-bearing passage in Top-3: No
+Final answer correct: No
+Observed generated answer:
+"Mottram 2021, p. 32."
+
+
+Baseline Retrieval Success Rate:
+
+3 / 5 = 60%
+
+
+RAG failure 1:
+Inception audio-cue question
+
+The retriever returned passages related to music, dream levels, and synchronized
+"kicks", but the actual answer-bearing passage containing the song title was
+not present in the Top-3 results. The model generated "Inception: Kick", which
+was unsupported by the retrieved context.
+
+Failure type:
+Retrieval failure followed by generation failure.
+
+
+RAG failure 2:
+Jurassic Park dinosaur question
+
+The baseline retriever returned mostly a section heading and citation/reference
+material rather than the relevant plot evidence. The model consequently
+returned "Mottram 2021, p. 32."
+
+Failure type:
+Retrieval failure followed by generation failure.
+
+
+Alternative chunking experiment:
+
+chunk_size = 1000
+chunk_overlap = 100
+
+The alternative configuration was tested on the two failed questions.
+
+
+Inception alternative result:
+Relevant answer-bearing passage in Top-3: No
+
+Retrieved chunks remained related to Inception, music, dreams, and film themes,
+but did not contain the required song evidence.
+
+Generated answer:
+"Penrose stairs are incorporated into the film as an example of the impossible
+objects that can be created in lucid dream worlds."
+
+Result:
+No retrieval improvement.
+
+
+Jurassic Park alternative result:
+Relevant answer-bearing passage in Top-3: Yes
+First relevant rank: 1
+
+Rank 1 contained plot text stating that a Tyrannosaurus rex escapes and attacks
+the touring group.
+
+Generated answer:
+"Dinosaurs are responsible for many of the attacks in Jurassic Park."
+
+Result:
+Retrieval improved, although generation remained overly generic and incorrect.
+
+
+Selected-question retrieval comparison:
+
+Baseline:
+0 / 2 = 0%
+
+Alternative:
+1 / 2 = 50%
+
+
+PART 3: TRAINING OPTIMIZATION TECHNIQUES
+========================================
+
+Objective:
+Run small controlled PyTorch experiments for:
+- Tensor Creation: CPU vs GPU
+- Weight Initialization
+- Activation Checkpointing
+- Gradient Accumulation
+- Mixed Precision Training
+
+Common configuration:
+- Framework: PyTorch
+- SEED = 5996
+- Device: CUDA GPU when available
+- Input dimension = 256
+- Hidden dimension = 512
+- Number of classes = 10
+- Batch size = 128
+- Training steps = 50
+- Dataset = synthetic classification data
+- Number of samples = 8000
+- Optimizer = Adam
+- Learning rate = 0.001
+- Loss = CrossEntropyLoss
+
+
+Tensor Creation:
+Compared creating the tensor on the CPU followed by GPU transfer with directly
+creating the tensor on the GPU.
+
+CPU creation + GPU transfer time:
+[INSERT YOUR VALUE] seconds
+
+Direct GPU creation time:
+[INSERT YOUR VALUE] seconds
+
+
+Weight Initialization:
+Compared PyTorch default initialization with Xavier uniform initialization.
+
+Default:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+Xavier:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+
+Activation Checkpointing:
+
+Without checkpointing:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+With checkpointing:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+
+Gradient Accumulation:
+
+Accumulation steps = 2
+
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+
+Mixed Precision:
+
+FP32:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+Mixed Precision:
+Time = [INSERT] seconds
+Peak GPU memory = [INSERT] MB
+Final loss = [INSERT]
+
+
+Notes:
+The same base model, synthetic data, batch size, and number of training steps
+were used throughout the controlled training experiments. Exact timing and GPU
+memory measurements depend on the assigned Colab GPU and runtime state.
+
+
+END OF HW2 RUN LOG
