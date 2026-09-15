@@ -1,0 +1,82 @@
+DATA266 - HW3 RUN LOG
+SID4: 5996
+SEED: 5996
+
+==================================================
+PART 1: PROMPT ENGINEERING
+==================================================
+
+Prompt engineering techniques tested:
+1. Zero-Shot
+2. Few-Shot
+3. Chain-of-Thought
+4. Zero-Shot Chain-of-Thought
+5. Meta-Prompting
+6. Tree of Thoughts
+
+Two prompt examples were executed for each technique.
+
+Important observed results:
+- Zero-Shot sentiment example classified the software-update
+  statement as Neutral.
+- Chain-of-Thought roses example produced a logically unsupported
+  conclusion.
+- Zero-Shot CoT sheep example incorrectly interpreted
+  "all but 9" and returned 8 instead of 9.
+- Prompt outputs were preserved for analysis rather than manually
+  correcting model responses.
+
+==================================================
+PART 2: SELF-ATTENTION
+==================================================
+
+Dataset:
+Neural networks are powerful models for learning representations from
+data. They consist of layers of interconnected neurons. Attention
+mechanisms allow models to focus on relevant parts of the input.
+Transformers rely entirely on attention instead of recurrence.
+Autoregressive models generate text one token at a time.
+
+Tokenization: Word-level
+
+Model components:
+- Trainable embedding layer
+- Query projection
+- Key projection
+- Value projection
+- Scaled dot-product attention
+- Output projection
+- Next-token prediction objective
+
+Unmasked self-attention model trained successfully.
+Final learned attention matrix computed after training.
+Unmasked attention heatmap generated.
+
+==================================================
+PART 3: CAUSAL SELF-ATTENTION
+==================================================
+
+A lower-triangular causal mask was applied to attention scores
+before softmax.
+
+Masked model trained using next-token prediction.
+Final causal attention matrix computed after training.
+Masked attention heatmap generated.
+
+Verification:
+Future-token attention weights are zero after causal masking.
+
+Example inspected:
+Query token: they
+networks        0.0443
+for             0.9315
+representations 0.0185
+
+==================================================
+OUTPUTS
+==================================================
+
+- Prompt-engineering outputs generated using code
+- Unmasked attention heatmap generated
+- Causal/masked attention heatmap generated
+- Learned attention weights inspected
