@@ -1,0 +1,55 @@
+HW4 — Building a Mini GPT from Scratch
+Run date: 2026-09-22
+Source notebook: Homework_4.ipynb
+
+NOTE: The uploaded executed notebook contains the recorded outputs used below.
+Exact per-cell execution timestamps were not stored in the notebook, so no timestamps
+have been fabricated in this log.
+
+=== DATA PREPARATION ===
+Vocabulary size: 49
+Sequence length: 128
+
+=== MODEL ARCHITECTURE ===
+Hidden dimension: 128
+Number of heads: 4
+Number of layers: 2
+Feedforward dimension: 512
+Total parameters: 425,777
+Trainable parameters: 425,777
+
+=== TRAINING CONFIGURATION ===
+Optimizer: Adam
+Learning rate: 0.0003
+Batch size: 64
+Epochs: 5
+Loss function: CrossEntropyLoss
+Training batches: 22
+Validation batches: 1
+
+=== TRAINING OUTPUT ===
+Epoch 1/5 completed | Average Training Loss: 3.3937
+Epoch 2/5 completed | Average Training Loss: 2.8129
+Epoch 3/5 completed | Average Training Loss: 2.5608
+Epoch 4/5 completed | Average Training Loss: 2.3909
+Epoch 5/5 completed | Average Training Loss: 2.2806
+
+Initial epoch loss: 3.3937
+Final epoch loss: 2.2806
+Loss reduction: 1.1131
+
+=== SAMPLING EXPERIMENTS ===
+Prompt: ROMEO:
+Greedy decoding: completed
+Temperature sampling: T = 0.5, 1.0, 1.5
+Top-k sampling: k = 5, 20
+
+Observed summary:
+- Greedy decoding became highly repetitive.
+- Temperature 0.5 was the most coherent among the tested outputs.
+- Temperature 1.5 produced the greatest diversity.
+- Top-k 5 was more constrained than top-k 20.
+
+=== ERRORS / STACK TRACES ===
+No relevant error or stack trace was present in the executed notebook outputs used
+for the reported results.
