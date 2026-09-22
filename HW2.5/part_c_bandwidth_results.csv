@@ -1,0 +1,2 @@
+Operation,Effective_Bandwidth_GBs,Specified_Bandwidth_GBs,Percent_of_Specified_Bandwidth,GPU_UUID
+Memory-bound benchmark,1381.2493937106929,1555.0,88.82632756981947,GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2

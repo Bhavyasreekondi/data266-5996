@@ -1,0 +1,11 @@
+Naive Attention Memory Scaling
+==================================================
+GPU UUID: GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+Quadratic coefficient a: 5.9612973127e-08 GB/token^2
+Linear coefficient b: 7.4608121049e-06 GB/token
+Intercept c: 1.0210745150e-02 GB
+R^2: 1.00000000
+
+Largest tested successful sequence: 25344
+Smallest tested failing sequence: 25600

@@ -1,0 +1,3 @@
+Method,Largest_Tested_Success,Smallest_Tested_Failure,OOM_Result,GPU_UUID
+Naive Attention,25344,25600,Bracketed between 25344 and 25600,GPU-4a3d609e-89cf-640b-8162-5adf66e41fde
+Fused Attention,4194304,Not observed,No OOM observed through 4194304 tokens,GPU-4a3d609e-89cf-640b-8162-5adf66e41fde

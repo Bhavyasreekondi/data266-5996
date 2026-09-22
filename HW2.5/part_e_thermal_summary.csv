@@ -1,0 +1,2 @@
+GPU_UUID,Peak_Throughput_First_30s_TFLOPS,Steady_State_Final_5min_TFLOPS,Steady_State_vs_Peak_pct,Maximum_Temperature_C,Loaded_Average_Temperature_C,Maximum_Power_W,Loaded_Average_Power_W,Loaded_Min_SM_Clock_MHz,Loaded_Max_SM_Clock_MHz,Thermal_Throttle_Observed,Throttle_Onset_s
+GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2,261.6050881150798,257.66058353974057,98.49219118643286,72.0,71.15481171548117,411.34,397.32531380753136,1230.0,1260.0,No evidence observed,None observed
