@@ -1,1 +1,227 @@
+GPU Assignment I: Precision, Bandwidth, and the Cost of Attention
+========================================================================
+
+STUDENT PARAMETERS
+------------------------------------------------------------------------
+SID4: 5996
+SEED: 5996
+
+HARDWARE COMPLIANCE NOTE
+------------------------------------------------------------------------
+Assignment-required hardware: NVIDIA RTX 5090 or RTX 4090.
+Actual environment used: Google Colab with NVIDIA A100-SXM4-40GB GPUs.
+The measurements below are reported using the actual GPU names and UUIDs.
+They must not be interpreted as RTX 4090/5090 measurements.
+
+PART A — GPU PROVENANCE
+------------------------------------------------------------------------
+Timestamp: 2026-09-22T18:36:31.947767
+GPU Name: NVIDIA A100-SXM4-40GB
+GPU UUID: GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+Driver Version: 580.82.07
+nvidia-smi CUDA Compatibility: 13.0
+PyTorch CUDA Version: 12.8
+VRAM: 40960 MiB
+Power Limit: 400.00 W
+PyTorch Version: 2.11.0+cu128
+
+PART B — PRECISION AND THROUGHPUT
+------------------------------------------------------------------------
+GPU UUID: GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+Warm-up runs: 5
+Timed repetitions: 20
+Matrix sizes: 1024, 4096, 8192, 16384
+Precisions: FP32, TF32, FP16, BF16
+
+    N Precision    Mean_ms   Std_ms     TFLOPS  Repetitions                                 GPU_UUID  Theoretical_TFLOPS  Percent_of_Peak
+ 1024      FP32   0.192307 0.010927  11.166944           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2                19.5        57.266377
+ 4096      FP32   8.336486 1.005526  16.486436           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2                19.5        84.545828
+ 8192      FP32  57.426381 0.045812  19.146455           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2                19.5        98.186950
+16384      FP32 460.752951 0.082744  19.090693           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2                19.5        97.900988
+ 1024      TF32   0.055347 0.005135  38.800222           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               156.0        24.871937
+ 4096      TF32   1.047603 0.003357 131.193715           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               156.0        84.098535
+ 8192      TF32   8.494899 0.060980 129.431980           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               156.0        82.969218
+16384      TF32  70.686310 0.284535 124.438424           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               156.0        79.768220
+ 1024      FP16   0.054221 0.012196  39.606270           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        12.694317
+ 4096      FP16   0.545536 0.004391 251.933794           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        80.748011
+ 8192      FP16   4.147661 0.095459 265.091983           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        84.965379
+16384      FP16  33.264691 0.425318 264.427315           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        84.752345
+ 1024      BF16   0.040038 0.007475  53.635600           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        17.190897
+ 4096      BF16   0.532070 0.004764 258.309716           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        82.791576
+ 8192      BF16   4.018739 0.126802 273.596161           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        87.691077
+16384      BF16  32.379289 0.230223 271.658000           20 GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2               312.0        87.069872
+
+Peak achieved BF16 throughput: 273.596161 TFLOPS at N=8192
+BF16 percent of theoretical peak: 87.691077%
+
+LOWER PRECISION TEST
+FP8 matmul attempt failed:
+NotImplementedError: "addmm_cuda" not implemented for 'Float8_e4m3fn'
+
+PART C — BANDWIDTH VS COMPUTE
+------------------------------------------------------------------------
+GPU UUID: GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+MEMORY-BOUND OPERATION
+Operation: FP32 elementwise addition
+Elements: 200000000
+Warm-up runs: 10
+Timed runs: 30
+Mean latency: 1.738 ms
+Effective bandwidth: 1381.25 GB/s
+Specified bandwidth: 1555.00 GB/s
+Percent specified bandwidth: 88.83%
+Arithmetic intensity: 0.0833 FLOPs/byte
+Roofline classification: Memory-bound
+
+COMPUTE-BOUND OPERATION
+Operation: BF16 square matrix multiplication
+Matrix size: 16384
+Achieved throughput: 271.66 TFLOPS
+Arithmetic intensity: 5461.33 FLOPs/byte
+Roofline classification: Compute-bound
+
+BF16 roofline ridge point: 200.64 FLOPs/byte
+
+PART D — THE COST OF ATTENTION
+------------------------------------------------------------------------
+Attention configuration:
+Batch size: 1
+Number of heads: 4
+Head dimension: 64
+Data type: torch.float16
+
+NOTE ON PROVENANCE:
+Part D was measured in a separate A100 Colab GPU session from Parts B/C/E.
+The final Part D artifacts associate the attention boundary results with:
+GPU UUID: GPU-4a3d609e-89cf-640b-8162-5adf66e41fde
+
+NAIVE ATTENTION
+Required coarse sweep included sequence lengths:
+512, 1024, 2048, 4096, 8192, 16384
+
+Largest tested successful sequence length: 25344
+Smallest tested failing sequence length: 25600
+OOM boundary: bracketed between 25344 and 25600 tokens
+
+Quadratic peak-memory fit:
+Quadratic coefficient: approximately 5.9613e-08 GB/token^2
+R^2: approximately 1.0
+Finding: measured naive-attention peak memory follows quadratic growth
+with sequence length.
+
+FUSED / MEMORY-EFFICIENT ATTENTION
+Implementation: PyTorch fused scaled dot-product attention
+Largest tested successful sequence length: 4194304
+Smallest tested failing sequence length: not observed
+OOM result: no OOM observed through 4194304 tokens
+
+Selected extended fused measurements:
+Sequence length 3145728:
+  Status: SUCCESS
+  Forward latency: 240608.578125 ms
+  Peak memory: 24.197388648986816 GB
+
+Sequence length 4194304:
+  Status: SUCCESS
+  Forward latency: 429933.59375 ms
+  Peak memory: 32.25988648986816 GB
+
+IMPORTANT:
+4194304 tokens is the largest tested successful fused-attention length.
+It is NOT an observed fused-attention OOM boundary.
+
+Fused attention avoids materializing the complete sequence-by-sequence
+attention matrix in global GPU memory. Intermediate computations are
+processed in tiles and reused, substantially reducing intermediate
+memory requirements relative to the naive implementation.
+
+Part D per-length naive/fused latency and speedup values are preserved in:
+part_d_attention_comparison.csv
+
+PART E — SUSTAINED LOAD AND THERMAL BEHAVIOUR
+------------------------------------------------------------------------
+GPU UUID: GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+GPU: NVIDIA A100-SXM4-40GB
+
+Sustained compute duration requested: 1200 seconds
+Actual runtime: approximately 20.07 minutes
+Telemetry interval: 5 seconds
+Telemetry samples: 240
+Throughput windows: 128
+Matrix size: 8192 x 8192
+Data type: torch.float16
+
+Peak throughput during first 30 seconds: 261.61 TFLOPS
+Steady-state throughput during final 5 minutes: 257.66 TFLOPS
+Steady-state / peak throughput: 98.49%
+
+Maximum GPU temperature: 72 C
+Average loaded GPU temperature: 71.2 C
+Maximum observed power: 411.34 W
+Average loaded power: 397.33 W
+Loaded SM clock range: 1230-1260 MHz
+High-utilization samples: 239 / 240
+
+Thermal throttling:
+No clear evidence of thermal throttling was observed in the collected
+telemetry. Throughput and loaded SM clock remained relatively stable
+after thermal steady state was reached.
+Throttle onset: None observed
+
+Thermal telemetry is preserved in:
+thermal_log.csv
+thermal_throughput.csv
+
+PART F — TABLE HW2.5.1 SUMMARY
+------------------------------------------------------------------------
+Measurement                              Result
+------------------------------------------------------------------------
+Peak achieved TFLOPS (BF16)              273.60 TFLOPS
+% of theoretical peak (BF16)             87.69%
+Effective bandwidth                      1381.25 GB/s
+Naive attention OOM length               25344 success; 25600 failure
+Fused attention OOM length               No OOM observed through 4194304
+Steady-state / peak throughput            98.49%
+Throttle onset                            None observed
+
+UUID TRACEABILITY
+------------------------------------------------------------------------
+Peak BF16 throughput:
+  GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+BF16 percent theoretical peak:
+  GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+Effective bandwidth:
+  GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+Naive attention boundary:
+  GPU-4a3d609e-89cf-640b-8162-5adf66e41fde
+
+Fused attention largest tested success:
+  GPU-4a3d609e-89cf-640b-8162-5adf66e41fde
+
+Steady-state / peak throughput:
+  GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+Throttle onset:
+  GPU-f5e42ed3-9b0a-7003-62dd-4fb887642ee2
+
+ERRORS / RELEVANT FAILURES
+------------------------------------------------------------------------
+FP8:
+NotImplementedError: "addmm_cuda" not implemented for 'Float8_e4m3fn'
+
+Naive attention:
+Smallest tested failing sequence length: 25600 tokens.
+
+Fused attention:
+No OOM was observed through 4194304 tokens.
+A later attempted 5242880-token fused test did not produce a valid OOM
+measurement because the runtime had reset and the measurement function
+was unavailable. Therefore it is not reported as an OOM observation.
+
+END OF RUN LOG
+========================================================================
 
