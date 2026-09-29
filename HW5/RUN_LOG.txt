@@ -1,0 +1,168 @@
+DATA 266 - Fine-Tuning LLM using LoRA
+SID4: 5996
+Model: google/flan-t5-small
+Dataset: DialogSum
+Environment: Google Colab
+GPU: Tesla T4
+Seed: 5996
+
+============================================================
+DATA PREPARATION
+============================================================
+
+Dataset split sizes:
+Train: 1999
+Validation: 499
+Test: 499
+
+Fine-tuning subset:
+Training samples: 1000
+Validation samples: 200
+
+
+============================================================
+LORA r=4 CONFIGURATION
+============================================================
+
+Rank (r): 4
+LoRA alpha: 16
+LoRA dropout: 0.05
+Target modules: q, v
+
+Trainable parameters: 172,032
+Total parameters: 77,133,184
+Trainable percentage: 0.2230%
+
+
+============================================================
+LORA r=4 TRAINING
+============================================================
+
+Epoch 1
+Training Loss: 1.627956
+Validation Loss: 1.453069
+
+Epoch 2
+Training Loss: 1.639476
+Validation Loss: 1.413707
+
+Epoch 3
+Training Loss: 1.520933
+Validation Loss: 1.402227
+
+Final training loss: 1.6972
+Final validation loss: 1.402227
+
+Adapter saved to:
+./dialogsum_lora_r4_adapter
+
+
+============================================================
+LORA r=16 CONFIGURATION
+============================================================
+
+Rank (r): 16
+LoRA alpha: 16
+LoRA dropout: 0.05
+Target modules: q, v
+
+Trainable parameters: 688,128
+Total parameters: 77,649,280
+Trainable percentage: 0.8862%
+
+Training samples: 1000
+Validation samples: 200
+Batch size: 4
+Epochs: 3
+fp16: False
+bf16: False
+Learning rate: 0.0001
+
+
+============================================================
+RELEVANT FAILED r=16 RUN
+============================================================
+
+An earlier r=16 training attempt was numerically invalid.
+
+Epoch    Training Loss    Validation Loss
+1        0.000000         nan
+2        0.000000         nan
+3        0.000000         nan
+
+The failed run was discarded. The model/trainer was recreated and
+mixed precision was disabled before the successful run below.
+
+
+============================================================
+LORA r=16 SUCCESSFUL TRAINING
+============================================================
+
+Epoch 1
+Training Loss: 1.630945
+Validation Loss: 1.451440
+
+Epoch 2
+Training Loss: 1.635241
+Validation Loss: 1.410672
+
+Epoch 3
+Training Loss: 1.519345
+Validation Loss: 1.398435
+
+Final validation loss: 1.398435
+
+Adapter saved to:
+./dialogsum_lora_r16_adapter
+
+
+============================================================
+BASELINE INFERENCE - FINAL TEST EXAMPLES [0, 3]
+============================================================
+
+Example 1
+Reference:
+Ms. Dawson helps #Person1# to write a memo to inform every employee
+that they have to change the communication method and should not use
+Instant Messaging anymore.
+
+Baseline:
+#Person2#: Thank you, sir.
+
+Example 2
+Reference:
+#Person2# arrives late because of traffic jam. #Person1# persuades
+#Person2# to use public transportations to keep healthy and to protect
+the environment.
+
+Baseline:
+Taking the subway would be a lot less stressful than driving.
+
+
+============================================================
+LORA r=4 AND r=16 INFERENCE
+============================================================
+
+Example 1:
+Both r=4 and r=16 produced:
+#Person1# asks #Person2# to take a dictation for #Person2#.
+The generated output repeated this statement multiple times.
+
+Example 2:
+Both r=4 and r=16 produced:
+#Person2# got stuck in traffic again. #Person2# thinks it would be
+better if #Person2# started taking public transport system to work.
+#Person2# thinks it would be better if #Person2# started biking to work.
+
+
+============================================================
+SUMMARY
+============================================================
+
+r=4 final validation loss:  1.402227
+r=16 final validation loss: 1.398435
+
+Increasing rank from 4 to 16 increased trainable parameters by 4x.
+The r=16 model achieved a slightly lower validation loss, but no
+noticeable output-quality improvement was observed on the two selected
+test dialogues.
