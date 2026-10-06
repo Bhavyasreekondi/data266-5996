@@ -1,0 +1,317 @@
+HW6-5 RUN LOG
+============================================================
+
+Assignment:
+Self-Supervised and Contrastive Representation Learning (STL-10)
+
+Execution platform: Google Colab
+GPU: NVIDIA L4
+Run date: 2026-10-06
+Random seed: 5996
+
+Training method:
+Google Colab Runtime -> Run all
+
+============================================================
+ENVIRONMENT SETUP
+============================================================
+
+[2026-10-06 HH:MM:SS PT] Environment setup completed
+
+PyTorch version: 2.11.0+cu130
+Torchvision version: 0.26.0+cu130
+Device: cuda
+GPU: NVIDIA L4
+Seed: 5996
+
+============================================================
+DATASET PREPARATION
+============================================================
+
+[2026-10-06 HH:MM:SS PT] STL-10 dataset loaded
+
+Full labeled training set: 5000
+Test set: 8000
+Unlabeled set: 100000
+
+Number of labeled images used: 500
+
+Class distribution in 500-image subset:
+airplane: 50
+bird: 45
+car: 41
+cat: 53
+deer: 59
+dog: 46
+horse: 56
+monkey: 42
+ship: 56
+truck: 52
+
+============================================================
+PART A — SUPERVISED LEARNING
+============================================================
+
+[2026-10-06 HH:MM:SS PT] Part A training started
+
+Model: ResNet-18
+Pretrained weights: None
+Training images: 500
+Test images: 8000
+Epochs: 15
+Optimizer: Adam
+Learning rate: 0.001
+Weight decay: 0.0001
+
+Epoch [01/15] | Train Loss: 2.2362 | Train Acc: 22.20% | Test Loss: 3.2222 | Test Acc: 15.64%
+Epoch [02/15] | Train Loss: 1.7584 | Train Acc: 34.20% | Test Loss: 2.4663 | Test Acc: 25.79%
+Epoch [03/15] | Train Loss: 1.5068 | Train Acc: 45.80% | Test Loss: 2.6906 | Test Acc: 27.46%
+Epoch [04/15] | Train Loss: 1.2802 | Train Acc: 49.20% | Test Loss: 2.5144 | Test Acc: 30.32%
+Epoch [05/15] | Train Loss: 1.1648 | Train Acc: 56.20% | Test Loss: 1.9522 | Test Acc: 34.75%
+Epoch [06/15] | Train Loss: 0.9975 | Train Acc: 65.40% | Test Loss: 2.8738 | Test Acc: 32.30%
+Epoch [07/15] | Train Loss: 0.8933 | Train Acc: 68.60% | Test Loss: 2.2863 | Test Acc: 34.60%
+Epoch [08/15] | Train Loss: 0.8990 | Train Acc: 67.80% | Test Loss: 2.2467 | Test Acc: 36.42%
+Epoch [09/15] | Train Loss: 0.7470 | Train Acc: 72.80% | Test Loss: 2.1148 | Test Acc: 37.85%
+Epoch [10/15] | Train Loss: 0.6416 | Train Acc: 78.00% | Test Loss: 2.1863 | Test Acc: 37.80%
+Epoch [11/15] | Train Loss: 0.5491 | Train Acc: 82.00% | Test Loss: 1.9918 | Test Acc: 40.99%
+Epoch [12/15] | Train Loss: 0.3837 | Train Acc: 86.40% | Test Loss: 2.2598 | Test Acc: 41.73%
+Epoch [13/15] | Train Loss: 0.3614 | Train Acc: 88.00% | Test Loss: 2.2110 | Test Acc: 42.17%
+Epoch [14/15] | Train Loss: 0.2935 | Train Acc: 90.40% | Test Loss: 2.5610 | Test Acc: 38.02%
+Epoch [15/15] | Train Loss: 0.4449 | Train Acc: 85.40% | Test Loss: 2.5828 | Test Acc: 40.85%
+
+PART A FINAL RESULTS:
+Final Test Loss: 2.5828
+Final Test Accuracy: 40.85%
+
+Saved:
+partA_supervised_resnet18.pth
+
+============================================================
+PART B — ROTATION SELF-SUPERVISED LEARNING
+============================================================
+
+[2026-10-06 HH:MM:SS PT] Rotation SSL training started
+
+Model: ResNet-18
+Pretrained weights: None
+Training images: 100000
+Rotation classes: 4
+Epochs: 15
+Optimizer: Adam
+Learning rate: 0.001
+Weight decay: 0.0001
+
+Epoch [01/15] | Rotation Loss: 0.9357 | Rotation Acc: 61.32%
+Epoch [02/15] | Rotation Loss: 0.7540 | Rotation Acc: 69.99%
+Epoch [03/15] | Rotation Loss: 0.6762 | Rotation Acc: 73.58%
+Epoch [04/15] | Rotation Loss: 0.6231 | Rotation Acc: 75.64%
+Epoch [05/15] | Rotation Loss: 0.5808 | Rotation Acc: 77.49%
+Epoch [06/15] | Rotation Loss: 0.5440 | Rotation Acc: 78.99%
+Epoch [07/15] | Rotation Loss: 0.5137 | Rotation Acc: 80.32%
+Epoch [08/15] | Rotation Loss: 0.4892 | Rotation Acc: 81.34%
+Epoch [09/15] | Rotation Loss: 0.4696 | Rotation Acc: 82.12%
+Epoch [10/15] | Rotation Loss: 0.4494 | Rotation Acc: 82.78%
+Epoch [11/15] | Rotation Loss: 0.4295 | Rotation Acc: 83.79%
+Epoch [12/15] | Rotation Loss: 0.4171 | Rotation Acc: 84.27%
+Epoch [13/15] | Rotation Loss: 0.4059 | Rotation Acc: 84.61%
+Epoch [14/15] | Rotation Loss: 0.3939 | Rotation Acc: 85.11%
+Epoch [15/15] | Rotation Loss: 0.3848 | Rotation Acc: 85.47%
+
+Final Rotation SSL Loss: 0.3848
+Final Rotation SSL Accuracy: 85.47%
+
+Saved:
+partB_rotation_ssl_resnet18.pth
+
+Rotation encoder:
+Feature dimension: 512
+Trainable encoder parameters: 0
+
+============================================================
+PART B — LINEAR EVALUATION
+============================================================
+
+[2026-10-06 HH:MM:SS PT] Initial linear-evaluation attempt failed
+
+Error:
+NameError: name 'DATA_DIR' is not defined
+
+Correction:
+The notebook variable DATA_ROOT was used instead of DATA_DIR.
+The labeled subset variable indices was used instead of labeled_indices.
+
+Corrected dataset sizes:
+Linear-training images: 500
+Linear-test images: 8000
+
+Linear classifier epochs: 20
+Encoder trainable parameters: 0
+
+Epoch [01/20] | Loss: 2.3025 | Accuracy: 12.20%
+Epoch [02/20] | Loss: 2.2561 | Accuracy: 14.80%
+Epoch [03/20] | Loss: 2.2288 | Accuracy: 14.40%
+Epoch [04/20] | Loss: 2.2053 | Accuracy: 20.20%
+Epoch [05/20] | Loss: 2.1790 | Accuracy: 21.40%
+Epoch [06/20] | Loss: 2.1579 | Accuracy: 28.80%
+Epoch [07/20] | Loss: 2.1385 | Accuracy: 30.00%
+Epoch [08/20] | Loss: 2.1191 | Accuracy: 30.40%
+Epoch [09/20] | Loss: 2.1030 | Accuracy: 31.20%
+Epoch [10/20] | Loss: 2.0855 | Accuracy: 29.80%
+Epoch [11/20] | Loss: 2.0700 | Accuracy: 31.00%
+Epoch [12/20] | Loss: 2.0537 | Accuracy: 31.60%
+Epoch [13/20] | Loss: 2.0423 | Accuracy: 32.80%
+Epoch [14/20] | Loss: 2.0269 | Accuracy: 32.60%
+Epoch [15/20] | Loss: 2.0147 | Accuracy: 33.80%
+Epoch [16/20] | Loss: 2.0020 | Accuracy: 36.40%
+Epoch [17/20] | Loss: 1.9903 | Accuracy: 36.00%
+Epoch [18/20] | Loss: 1.9812 | Accuracy: 33.80%
+Epoch [19/20] | Loss: 1.9687 | Accuracy: 33.80%
+Epoch [20/20] | Loss: 1.9584 | Accuracy: 36.00%
+
+Rotation SSL linear-evaluation test accuracy: 31.06%
+
+Saved:
+partB_rotation_linear_evaluation.pth
+
+============================================================
+PART C — SIMCLR PRETRAINING
+============================================================
+
+[2026-10-06 HH:MM:SS PT] SimCLR training started
+
+Unlabeled images used: 20000
+Batch size: 128
+Augmentations:
+- Random resized crop
+- Random horizontal flip
+- Color jitter
+- Random grayscale
+
+Projection head:
+512 -> 512 -> 128
+
+Temperature: 0.2
+Epochs: 15
+Optimizer: Adam
+Learning rate: 0.001
+Weight decay: 0.000001
+
+Initial contrastive loss:
+5.48203182220459
+
+Epoch [01/15] | Contrastive Loss: 4.6906
+Epoch [02/15] | Contrastive Loss: 3.9053
+Epoch [03/15] | Contrastive Loss: 3.5748
+Epoch [04/15] | Contrastive Loss: 3.2936
+Epoch [05/15] | Contrastive Loss: 3.0677
+Epoch [06/15] | Contrastive Loss: 2.8997
+Epoch [07/15] | Contrastive Loss: 2.7793
+Epoch [08/15] | Contrastive Loss: 2.7050
+Epoch [09/15] | Contrastive Loss: 2.6156
+Epoch [10/15] | Contrastive Loss: 2.5662
+Epoch [11/15] | Contrastive Loss: 2.5197
+Epoch [12/15] | Contrastive Loss: 2.4748
+Epoch [13/15] | Contrastive Loss: 2.4213
+Epoch [14/15] | Contrastive Loss: 2.3976
+Epoch [15/15] | Contrastive Loss: 2.3574
+
+Final SimCLR Contrastive Loss: 2.3574
+
+Saved:
+partC_simclr_resnet18.pth
+
+============================================================
+PART C — LINEAR EVALUATION
+============================================================
+
+[2026-10-06 HH:MM:SS PT] SimCLR linear evaluation started
+
+SimCLR encoder feature dimension: 512
+Trainable encoder parameters: 0
+Linear classifier epochs: 20
+
+Epoch [01/20] | Loss: 2.2527 | Accuracy: 17.80%
+Epoch [02/20] | Loss: 1.6066 | Accuracy: 44.40%
+Epoch [03/20] | Loss: 1.3747 | Accuracy: 51.40%
+Epoch [04/20] | Loss: 1.2788 | Accuracy: 54.00%
+Epoch [05/20] | Loss: 1.2133 | Accuracy: 56.60%
+Epoch [06/20] | Loss: 1.1787 | Accuracy: 57.60%
+Epoch [07/20] | Loss: 1.1424 | Accuracy: 59.60%
+Epoch [08/20] | Loss: 1.1211 | Accuracy: 59.40%
+Epoch [09/20] | Loss: 1.0965 | Accuracy: 62.20%
+Epoch [10/20] | Loss: 1.0897 | Accuracy: 60.60%
+Epoch [11/20] | Loss: 1.0750 | Accuracy: 62.80%
+Epoch [12/20] | Loss: 1.0546 | Accuracy: 62.40%
+Epoch [13/20] | Loss: 1.0410 | Accuracy: 64.20%
+Epoch [14/20] | Loss: 1.0334 | Accuracy: 62.80%
+Epoch [15/20] | Loss: 1.0208 | Accuracy: 63.40%
+Epoch [16/20] | Loss: 1.0186 | Accuracy: 63.60%
+Epoch [17/20] | Loss: 0.9944 | Accuracy: 64.60%
+Epoch [18/20] | Loss: 0.9787 | Accuracy: 65.20%
+Epoch [19/20] | Loss: 0.9844 | Accuracy: 65.00%
+Epoch [20/20] | Loss: 0.9786 | Accuracy: 64.40%
+
+SimCLR linear-evaluation test accuracy: 52.49%
+
+Saved:
+partC_simclr_linear_evaluation.pth
+
+============================================================
+PART D — NEAREST-NEIGHBOR VISUALIZATION
+============================================================
+
+[2026-10-06 HH:MM:SS PT] Test embeddings extracted
+
+Supervised embedding shape: torch.Size([8000, 512])
+Rotation SSL embedding shape: torch.Size([8000, 512])
+SimCLR embedding shape: torch.Size([8000, 512])
+
+Shared query indices:
+[5734, 61, 1156]
+
+Query classes:
+5734: dog
+61: bird
+1156: monkey
+
+Cosine-similarity nearest neighbors were computed using normalized
+512-dimensional test embeddings.
+
+Nearest-neighbor visualizations were generated for:
+- Supervised encoder
+- Rotation SSL encoder
+- SimCLR encoder
+
+Three figures were saved in the figures directory.
+
+============================================================
+FINAL RESULTS
+============================================================
+
+| Model | Test Accuracy |
+|---|---:|
+| Supervised ResNet-18 | 40.85% |
+| Rotation SSL + Linear Classifier | 31.06% |
+| SimCLR + Linear Classifier | 52.49% |
+
+Best model:
+SimCLR + Linear Classifier
+
+Best test accuracy:
+52.49%
+
+============================================================
+CHECKPOINTS
+============================================================
+
+Saved checkpoint files:
+
+partA_supervised_resnet18.pth
+partB_rotation_ssl_resnet18.pth
+partB_rotation_linear_evaluation.pth
+partC_simclr_resnet18.pth
+partC_simclr_linear_evaluation.pth
+
+============================================================
+END OF RUN LOG
+============================================================
