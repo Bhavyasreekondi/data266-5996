@@ -1,1 +1,179 @@
+============================================================
+DATA 266 — HW8 RUN LOG
+Mini Diffusion Model: DDPM to DDIM
+============================================================
 
+Student configuration
+---------------------
+SID4: 5996
+SEED: 5996
+Assigned slice value: 996
+HP_ID: 2
+CLS_A: 6
+CLS_B: 2
+
+The notebook used the seed value 5996.
+The complete MNIST training set was used.
+Slice-based and focus-class filtering were not applied.
+
+Execution information
+---------------------
+Runtime: Google Colab GPU
+Device: cuda
+Execution status: Completed successfully
+
+Training command
+----------------
+The notebook was executed from beginning to end using Google Colab
+Run all.
+
+The training was performed by the training loop in the notebook using:
+
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
+
+num_epochs = 50
+
+The training objective was:
+
+loss = F.mse_loss(predicted_noise, actual_noise)
+
+Training configuration
+----------------------
+Dataset: MNIST
+Training samples: 60000
+Diffusion steps: 100
+Beta start: 0.0001
+Beta end: 0.02
+Batch size: 128
+Epochs: 50
+Optimizer: Adam
+Learning rate: 0.001
+Loss function: MSE
+Model: Timestep-conditioned CNN
+Convolutional layers: 5
+DDIM eta: 0.0
+
+Executed beta values
+--------------------
+First beta: 9.999999747378752e-05
+Last beta: 0.019999999552965164
+
+Forward diffusion verification
+------------------------------
+Timesteps visualized: 0, 10, 25, 50, 75, 99
+
+Forward diffusion completed successfully.
+The MNIST image became progressively noisier as the timestep increased.
+
+Model shape verification
+------------------------
+Input shape: torch.Size([4, 1, 28, 28])
+Output shape: torch.Size([4, 1, 28, 28])
+Shape requirement passed: YES
+
+Training output
+---------------
+Epoch [1/50] Loss: 0.162754
+Epoch [2/50] Loss: 0.078938
+Epoch [3/50] Loss: 0.072296
+Epoch [4/50] Loss: 0.069085
+Epoch [5/50] Loss: 0.067971
+Epoch [6/50] Loss: 0.066061
+Epoch [7/50] Loss: 0.066419
+Epoch [8/50] Loss: 0.064417
+Epoch [9/50] Loss: 0.063934
+Epoch [10/50] Loss: 0.064057
+Epoch [11/50] Loss: 0.063626
+Epoch [12/50] Loss: 0.062749
+Epoch [13/50] Loss: 0.062452
+Epoch [14/50] Loss: 0.062812
+Epoch [15/50] Loss: 0.062302
+Epoch [16/50] Loss: 0.061993
+Epoch [17/50] Loss: 0.061342
+Epoch [18/50] Loss: 0.061266
+Epoch [19/50] Loss: 0.061237
+Epoch [20/50] Loss: 0.061892
+Epoch [21/50] Loss: 0.061185
+Epoch [22/50] Loss: 0.060749
+Epoch [23/50] Loss: 0.060472
+Epoch [24/50] Loss: 0.060768
+Epoch [25/50] Loss: 0.060768
+Epoch [26/50] Loss: 0.060329
+Epoch [27/50] Loss: 0.060604
+Epoch [28/50] Loss: 0.060222
+Epoch [29/50] Loss: 0.060329
+Epoch [30/50] Loss: 0.060117
+Epoch [31/50] Loss: 0.060063
+Epoch [32/50] Loss: 0.059663
+Epoch [33/50] Loss: 0.059766
+Epoch [34/50] Loss: 0.059860
+Epoch [35/50] Loss: 0.059566
+Epoch [36/50] Loss: 0.059971
+Epoch [37/50] Loss: 0.060071
+Epoch [38/50] Loss: 0.059824
+Epoch [39/50] Loss: 0.059283
+Epoch [40/50] Loss: 0.059211
+Epoch [41/50] Loss: 0.059242
+Epoch [42/50] Loss: 0.059331
+Epoch [43/50] Loss: 0.059421
+Epoch [44/50] Loss: 0.059015
+Epoch [45/50] Loss: 0.059273
+Epoch [46/50] Loss: 0.058848
+Epoch [47/50] Loss: 0.059124
+Epoch [48/50] Loss: 0.059330
+Epoch [49/50] Loss: 0.058718
+Epoch [50/50] Loss: 0.058772
+
+Training summary
+----------------
+Initial training loss: 0.162754
+Final training loss: 0.058772
+Best training loss: 0.058718
+
+Checkpoint output
+-----------------
+Model saved successfully.
+
+Checkpoint filename:
+mini_ddpm_mnist.pth
+
+DDPM sampling output
+--------------------
+Number of samples: 16
+Reverse steps: 100
+Output shape: torch.Size([16, 1, 28, 28])
+
+DDIM 50-step sampling output
+----------------------------
+Number of samples: 16
+Reverse steps: 50
+Eta: 0.0
+Output shape: 16 generated images
+
+DDIM 20-step sampling output
+----------------------------
+Number of samples: 16
+Reverse steps: 20
+Eta: 0.0
+Output shape: 16 generated images
+
+Sampling-time output
+--------------------
+DDPM 100-step time: 0.110 seconds
+DDIM 50-step time: 0.069 seconds
+DDIM 20-step time: 0.028 seconds
+
+Sampling comparison
+-------------------
+DDIM 50 was faster than DDPM by 0.041 seconds.
+DDIM 20 was faster than DDPM by 0.082 seconds.
+DDIM 20 was the fastest sampling method.
+DDPM 100 was the slowest sampling method.
+
+Errors and warnings
+-------------------
+No execution errors or warnings were visible in the stored notebook outputs.
+
+============================================================
+End of run log
+============================================================
