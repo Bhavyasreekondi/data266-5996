@@ -1,1 +1,80 @@
+HW9 — Latent Diffusion Model
+Student: Bhavyasree Kondi
+Seed: 5996
+Device: NVIDIA L4 GPU
+GPU count: 1
 
+Environment:
+- PyTorch with CUDA
+- torchvision
+- diffusers
+- transformers
+- accelerate
+- torchmetrics
+
+Dataset:
+- FashionMNIST
+- Training images: 60,000
+- Testing images: 10,000
+- Image size: 128 x 128
+- Image channels: 3
+- Normalized range: [-1, 1]
+
+VAE:
+- Model: stabilityai/sd-vae-ft-mse
+- Latent scaling factor: 0.18215
+- Latent shape: [batch, 4, 16, 16]
+- Reconstruction MSE: 0.000741
+
+Diffusion:
+- Timesteps: 1000
+- Beta start: 0.0001
+- Beta end: 0.02
+- Schedule: linear beta schedule
+
+U-Net:
+- Base channels: 64
+- Channel multipliers: (1, 2, 4)
+- Time embedding: sinusoidal embedding followed by MLP
+- Residual blocks: GroupNorm, SiLU, and skip connections
+- Self-attention: 16 x 16 resolution and bottleneck
+- Label classes: 10 FashionMNIST classes
+- Null label: 10
+- Classifier-free label dropout probability: 0.1
+- Trainable parameters: 6,536,004
+
+Training:
+- Optimizer: AdamW
+- Learning rate: 0.00002
+- Epochs: 50
+- Batch size: 64
+- Gradient clipping: 1.0
+
+Training loss:
+- Epoch 1: 0.112814
+- Epoch 2: 0.113074
+- Epoch 3: 0.110504
+- Epoch 4: 0.109523
+- Epoch 5: 0.109515
+- Epoch 10: 0.104993
+- Epoch 20: 0.100290
+- Epoch 30: 0.096987
+- Epoch 40: 0.094934
+- Epoch 50: 0.093710
+
+Sampling:
+- Guidance scale: 5.0
+- Conditional samples: 64
+- Labels: classes 0 through 9 repeated
+- Conditional sample grid generated successfully
+- Unconditional sample grid generated successfully
+- Conditional/unconditional comparison generated successfully
+
+Checkpoints:
+- A checkpoint was saved after every training epoch in ./checkpoints/
+- Final checkpoint: checkpoints/latent_diffusion_epoch_50.pt
+
+Errors:
+- No execution errors occurred.
+- Hugging Face authentication warning appeared because no HF_TOKEN was configured.
+- The authentication warning did not prevent model or dataset downloads.
