@@ -1,1 +1,215 @@
+RAG ASSIGNMENT RUN LOG
 
+Project:
+Improving RAG with Reranking, Chunking, and Conversational Memory
+
+Date:
+November 10, 2026
+
+Environment:
+Google Colab
+Python 3
+
+STEP 1: Package Installation
+Status: Completed
+
+Installed packages:
+- datasets
+- sentence-transformers
+- chromadb
+- pandas
+- numpy
+- scikit-learn
+- matplotlib
+- seaborn
+
+A PyTorch and Sentence Transformers import error occurred initially. The Colab runtime was restarted after package installation, and the imports completed successfully.
+
+STEP 2: Dataset Loading
+Status: Completed
+
+Dataset:
+ccdv/arxiv-summarization
+
+Configuration:
+document
+
+Split:
+train
+
+Number of documents:
+100
+
+Text field:
+article
+
+Summary field:
+abstract
+
+Streaming was used to load only the first 100 documents.
+
+STEP 3: Preprocessing
+Status: Completed
+
+The following preprocessing steps were performed:
+
+- Removed newline characters.
+- Removed repeated whitespace.
+- Preserved document IDs.
+- Stored article and abstract text.
+
+STEP 4: Chunking
+Status: Completed
+
+Chunking Strategy 1:
+Fixed-word chunking
+
+Parameters:
+- Approximately 180 words per chunk.
+- 40-word overlap.
+
+Chunking Strategy 2:
+Sentence-window chunking
+
+Parameters:
+- Approximately 180 words per chunk.
+- Sentence boundaries preserved.
+- One-sentence overlap.
+
+Both strategies were applied to all 100 documents.
+
+STEP 5: Embedding Generation
+Status: Completed
+
+Embedding model:
+sentence-transformers/all-MiniLM-L6-v2
+
+Embeddings were generated separately for both chunking strategies and normalized before indexing.
+
+STEP 6: Vector Database
+Status: Completed
+
+Vector database:
+ChromaDB
+
+Collections created:
+- fixed_word_collection
+- sentence_window_collection
+
+Each collection stored:
+
+- Chunk text.
+- Chunk ID.
+- Source document ID.
+- Chunking strategy.
+- Embedding vector.
+
+STEP 7: Baseline Retrieval
+Status: Completed
+
+At least two sample queries were evaluated.
+
+The top five chunks were retrieved using vector similarity search without reranking.
+
+The retrieved results included:
+
+- Chunk ID.
+- Source document ID.
+- Distance score.
+- Chunk text.
+
+STEP 8: Reranking
+Status: Completed
+
+Reranking model:
+cross-encoder/ms-marco-MiniLM-L6-v2
+
+The system first retrieved candidate chunks and then reranked them using the CrossEncoder.
+
+Both chunking strategies were tested with and without reranking.
+
+STEP 9: Conversational Memory
+Status: Completed
+
+A simple conversational-memory mechanism was implemented.
+
+The memory stored:
+
+- The previous user query.
+- The previous retrieved context.
+
+A follow-up query depended on the first query and was evaluated with and without conversational memory.
+
+STEP 10: Evaluation Metrics
+Status: Completed
+
+The following metrics were calculated:
+
+- Precision@5.
+- Recall@5.
+- Mean Reciprocal Rank.
+
+Relevance was manually defined using source document IDs.
+
+STEP 11: Evaluation Results
+Status: Completed
+
+Fixed-word chunking without reranking:
+
+- Precision@5: 0.90
+- Recall@5: 1.00
+- MRR: 1.00
+- Average Score: 0.9667
+
+Fixed-word chunking with reranking:
+
+- Precision@5: 0.80
+- Recall@5: 1.00
+- MRR: 1.00
+- Average Score: 0.9333
+
+Sentence-window chunking without reranking:
+
+- Precision@5: 0.90
+- Recall@5: 1.00
+- MRR: 1.00
+- Average Score: 0.9667
+
+Sentence-window chunking with reranking:
+
+- Precision@5: 0.60
+- Recall@5: 1.00
+- MRR: 0.6667
+- Average Score: 0.7556
+
+STEP 12: Main Finding
+Status: Completed
+
+Fixed-word chunking without reranking and sentence-window chunking without reranking achieved the same highest average score of 0.9667.
+
+Reranking did not improve performance for the current queries.
+
+The results are preliminary because only a small number of queries were evaluated.
+
+STEP 13: Generated Output Files
+Status: Completed
+
+The following evaluation files were generated:
+
+- rag_retrieval_evaluation.csv
+- rag_memory_evaluation.csv
+- rag_complete_comparison.csv
+
+STEP 14: Reproducibility
+Status: Completed
+
+The notebook was executed in Google Colab.
+
+Random seed:
+5996
+
+The main preprocessing, chunking, embedding, indexing, retrieval, reranking, conversational-memory, and evaluation steps were executed successfully.
+
+Known Limitation:
+
+Some queries were partly generated from source-document information. This may introduce query leakage. A stronger evaluation should use at least five manually written queries with human-verified relevance labels.
