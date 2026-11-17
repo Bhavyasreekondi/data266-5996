@@ -1,1 +1,177 @@
+DATA 266 HW11 - CLIP CIFAR-10 Run Log
+=====================================
 
+Environment
+-----------
+Device: cuda
+Model: openai/clip-vit-base-patch32
+CLIP model loaded successfully.
+
+Dataset
+-------
+Dataset: CIFAR-10
+Training images: 50000
+Testing images: 10000
+
+Classes
+-------
+airplane
+automobile
+bird
+cat
+deer
+dog
+frog
+horse
+ship
+truck
+
+Caption Similarity Experiment
+-----------------------------
+Caption: a photo of a dog
+Total images evaluated: 1000
+Images per class: 100
+
+Images selected:
+airplane: 100
+automobile: 100
+bird: 100
+cat: 100
+deer: 100
+dog: 100
+frog: 100
+horse: 100
+ship: 100
+truck: 100
+
+Caption Similarity Findings
+---------------------------
+Highest average similarity class: dog
+Highest average similarity score: 0.259405
+
+Lowest average similarity class: ship
+Lowest average similarity score: 0.195086
+
+Class similarity scores:
+dog: 0.259405
+cat: 0.239391
+deer: 0.234355
+frog: 0.229112
+bird: 0.225324
+horse: 0.220083
+airplane: 0.203479
+automobile: 0.201487
+truck: 0.195114
+ship: 0.195086
+
+Zero-Shot Classification
+------------------------
+Text embedding shape: torch.Size([10, 512])
+Image embedding shape: torch.Size([10000, 512])
+Test images evaluated: 10000
+
+Overall zero-shot accuracy: 0.8880
+Overall zero-shot accuracy: 88.80%
+
+Per-Class Accuracy
+------------------
+airplane: 90.1%
+automobile: 97.6%
+bird: 88.8%
+cat: 86.0%
+deer: 76.5%
+dog: 88.4%
+frog: 77.4%
+horse: 97.6%
+ship: 95.5%
+truck: 90.1%
+
+Classification Report
+---------------------
+airplane:
+  precision: 0.9504
+  recall: 0.9010
+  f1-score: 0.9251
+  support: 1000
+
+automobile:
+  precision: 0.8785
+  recall: 0.9760
+  f1-score: 0.9247
+  support: 1000
+
+bird:
+  precision: 0.8124
+  recall: 0.8880
+  f1-score: 0.8485
+  support: 1000
+
+cat:
+  precision: 0.8190
+  recall: 0.8600
+  f1-score: 0.8390
+  support: 1000
+
+deer:
+  precision: 0.9341
+  recall: 0.7650
+  f1-score: 0.8411
+  support: 1000
+
+dog:
+  precision: 0.8500
+  recall: 0.8840
+  f1-score: 0.8667
+  support: 1000
+
+frog:
+  precision: 0.9711
+  recall: 0.7740
+  f1-score: 0.8614
+  support: 1000
+
+horse:
+  precision: 0.8127
+  recall: 0.9760
+  f1-score: 0.8869
+  support: 1000
+
+ship:
+  precision: 0.9446
+  recall: 0.9550
+  f1-score: 0.9498
+  support: 1000
+
+truck:
+  precision: 0.9688
+  recall: 0.9010
+  f1-score: 0.9337
+  support: 1000
+
+Macro average:
+  precision: 0.8942
+  recall: 0.8880
+  f1-score: 0.8877
+
+Weighted average:
+  precision: 0.8942
+  recall: 0.8880
+  f1-score: 0.8877
+
+Generated Output Files
+----------------------
+clip_caption_similarity_scores.csv
+clip_class_similarity_summary.csv
+clip_zero_shot_per_class_accuracy.csv
+clip_confusion_matrix.npy
+clip_assignment_results.json
+
+Final Status
+------------
+CLIP model loaded successfully.
+Caption similarity experiment completed.
+100 images evaluated from each CIFAR-10 class.
+Zero-shot classification completed on all 10,000 test images.
+Per-class accuracy calculated.
+Confusion matrix generated.
+Results and output files saved successfully.
